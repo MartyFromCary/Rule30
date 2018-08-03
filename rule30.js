@@ -1,8 +1,18 @@
 "use strict";
-const rule30 =  [0,1,1,1,1,0,0,0];
-const rule90 =  [0,1,0,1,1,0,1,0];
-const rule110 = [0,1,1,1,0,1,1,0];
-const rule184 = [0,0,0,1,1,1.0,1];
+const rule28 =  [0,0,1,1,1,0,0,0];	// x1C
+const rule30 =  [0,1,1,1,1,0,0,0];	// x1E
+const rule50 =  [0,1,0,0,1,1,0,0];	// x32
+const rule54 =  [0,1,1,0,1,1,0,0];	// x36
+const rule58 =  [0,1,0,1,1,1,0,0];	// x3A
+const rule90 =  [0,1,0,1,1,0,1,0];	// x5A
+const rule110 = [0,1,1,1,0,1,1,0];	// x6E
+const rule114 = [0,1,0,0,1,1,1,0];	// x72
+const rule122 = [0,1,0,1,1,1,1,0];	// x7A
+const rule178 = [0,1,0,0,1,1,0,1];	// xB2
+const rule184 = [0,0,0,1,1,1.0,1];	// xB8
+const rule186 = [0,1,0,1,1,1,0,1];	// xBA
+const rule242 = [0,1,0,0,1,1,1,1];	// xF2
+const rule250 = [0,1,0,1,1,1,1,1];	// xFA
 
 var currCells;
 var nextCells;
