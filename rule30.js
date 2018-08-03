@@ -1,11 +1,11 @@
 "use strict";
 const rule30 =  [0,1,1,1,1,0,0,0];
-//const rule90 =  [0,1,0,1,1,0,1,0];
-//const rule110 = [0,1,1,1,0,1,1,0];
-//const rule184 = [0,0,0,1,1,1.0,1];
+const rule90 =  [0,1,0,1,1,0,1,0];
+const rule110 = [0,1,1,1,0,1,1,0];
+const rule184 = [0,0,0,1,1,1.0,1];
+
 var currCells;
 var nextCells;
-//var returnGeneration;
 
 const black = [0, 0, 0];
 const lightYellow = [255, 255, 0xb3];
@@ -32,8 +32,6 @@ const putPixelLine = (pixelIndex, pixel) => {
 
 const generateCells = rule => {
 
-	//console.log(`${cellIndexStart} ${cellIndexEnd} ${cellIndexEnd - cellIndexStart + 1}`);
-
 	let leftCell;
 	let midCell = 0;
 	let rightCell = 0;
@@ -44,8 +42,7 @@ const generateCells = rule => {
 
 		nextCells[cellIndex] = rule[(((leftCell << 1) + midCell) << 1) + rightCell];
 	}
-	//console.log(`this: ${currCells}`);
-	//console.log(`next: ${nextCells}`);
+
 	[currCells, nextCells] = [nextCells, currCells];
 };
 
@@ -84,12 +81,9 @@ $(() => {
 		canvasMidPoint--;
 		frameWidth = (canvasMidPoint << 1) + 1; // make frameWidth odd
 	}
-	//alert(`frameWidth: ${frameWidth}`);
 
 	canvasWidth = frameWidth;
 	canvasHeight = canvasMidPoint;
-	// alert(`canvasWidth: ${canvasWidth}`); alert(`canvasHeight: ${canvasHeight}`);
-	// alert(`canvasMidPoint: ${canvasMidPoint}`);
 
 	myCanvas = $("#myCanvas")[0];
 	myCanvas.width = canvasWidth;
@@ -98,5 +92,6 @@ $(() => {
 	canvasContext.fillStyle = "white";
 	canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
 	canvasImage = canvasContext.createImageData(canvasWidth, canvasHeight);
-	$("#startBtn").click(draw);
+
+	draw();
 });
