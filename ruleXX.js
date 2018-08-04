@@ -26,8 +26,8 @@ const putPixel = (imageParts, imageIndex, pixelParts) => {
 }
 
 // adapted from:
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putI
-// mageData
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/put
+// I mageData
 function putImageData(ctx, imageData) {
 	const data = imageData.data;
 	const height = imageData.height;
@@ -100,8 +100,18 @@ const draw = ruleVal => {
 		cellIndexStart--;
 		cellIndexEnd++;
 	}
-	//canvasContext.putImageData(canvasImage, 0, 0);
-	putImageData(canvasContext, canvasImage);
+	// canvasContext.putImageData(canvasImage, 0, 0); putImageData(canvasContext,
+	// canvasImage); function putImageData(ctx, imageData)
+
+	rowIndex = 0;
+	for (let lineNr = 0; lineNr < canvasHeight; lineNr++) {
+		for (let i = 0; i < canvasWidth; i++) {
+			let xpos = (rowIndex + i) * 4;
+			canvasContext.fillStyle = 'rgba(' + canvasImage.data[xpos] + ',' + canvasImage.data[xpos + 1] + ',' + canvasImage.data[xpos + 2] + ',' + (canvasImage.data[xpos + 3] / 255) + ')';
+			canvasContext.fillRect(i, lineNr, 1, 1);
+		}
+		rowIndex += canvasWidth;
+	}
 
 };
 
