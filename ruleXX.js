@@ -35,24 +35,9 @@ const val2Array = value => {
 	return arry;
 }
 
-const generateCells = ruleArry => {
-
-	let leftCell;
-	let midCell = 0;
-	let rightCell = 0;
-	for (let cellIndex = cellIndexStart; cellIndex <= cellIndexEnd; cellIndex++) {
-		leftCell = midCell;
-		midCell = rightCell;
-		rightCell = currCells[cellIndex + 1];
-
-		nextCells[cellIndex] = ruleArry[(((leftCell << 1) + midCell) << 1) + rightCell];
-	}
-
-	[currCells, nextCells] = [nextCells, currCells];
-};
-
 const draw = ruleVal => {
 	const ruleArry = val2Array(ruleVal);
+	let leftCell, midCell, rightCell;
 	let rowIndex;
 
 	currCells = new Array(canvasWidth).fill(0);
@@ -65,17 +50,28 @@ const draw = ruleVal => {
 
 		if (lineNr == 0)
 			currCells[canvasMidPoint] = 1;
-		else
-			generateCells(ruleArry);
+		else {
+			midCell = 0;
+			rightCell = 0;
+			for (let cellIndex = cellIndexStart; cellIndex <= cellIndexEnd; cellIndex++) {
+				leftCell = midCell;
+				midCell = rightCell;
+				rightCell = currCells[cellIndex + 1];
+
+				nextCells[cellIndex] = ruleArry[(((leftCell << 1) + midCell) << 1) + rightCell];
+			}
+
+			[currCells, nextCells] = [nextCells, currCells];
+		}
 
 		for (let i = cellIndexStart; i <= cellIndexEnd; i++) {
 			putPixelLine((rowIndex + i) * 4, pixelArray[currCells[i]]);
 		}
 
+
+		rowIndex += canvasWidth;
 		cellIndexStart--;
 		cellIndexEnd++;
-		rowIndex += canvasWidth;
-
 	}
 	canvasContext.putImageData(canvasImage, 0, 0);
 };
