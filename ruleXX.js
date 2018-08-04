@@ -12,9 +12,9 @@ var myFrame;
 var frameWidth;
 
 var myCanvas;
-var canvasWidth;
+//var canvasWidth;
 var canvasMidPoint;
-var canvasHeight;
+//var canvasHeight;
 var cellIndexStart;
 var cellIndexEnd;
 
@@ -23,6 +23,24 @@ const putPixel = (imageParts, imageIndex, pixelParts) => {
 	imageParts[imageIndex++] = pixelParts[1]; // green
 	imageParts[imageIndex++] = pixelParts[2]; // blue
 	imageParts[imageIndex] = 255; // opacity
+}
+
+// adapted from:
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putI
+// mageData
+function putImageData(ctx, imageData) {
+	const data = imageData.data;
+	const height = imageData.height;
+	const width = imageData.width;
+
+	for (let y = 0; y < height; y++) {
+		let ypos = y * width;
+		for (let x = 0; x < width; x++) {
+			let xpos = (ypos + x) * 4;
+			ctx.fillStyle = 'rgba(' + data[xpos] + ',' + data[xpos + 1] + ',' + data[xpos + 2] + ',' + (data[xpos + 3] / 255) + ')';
+			ctx.fillRect(x, y, 1, 1);
+		}
+	}
 }
 
 const val2Array = value => {
@@ -35,6 +53,9 @@ const val2Array = value => {
 }
 
 const draw = ruleVal => {
+	var canvasWidth = frameWidth;
+	var canvasHeight = canvasMidPoint;
+
 	myCanvas.width = canvasWidth;
 	myCanvas.height = canvasHeight;
 
@@ -79,7 +100,9 @@ const draw = ruleVal => {
 		cellIndexStart--;
 		cellIndexEnd++;
 	}
-	canvasContext.putImageData(canvasImage, 0, 0);
+	//canvasContext.putImageData(canvasImage, 0, 0);
+	putImageData(canvasContext, canvasImage);
+
 };
 
 $(() => {
@@ -93,9 +116,6 @@ $(() => {
 		canvasMidPoint--;
 		frameWidth = (canvasMidPoint << 1) + 1; // make frameWidth odd
 	}
-
-	canvasWidth = frameWidth;
-	canvasHeight = canvasMidPoint;
 
 	draw(30);
 });
