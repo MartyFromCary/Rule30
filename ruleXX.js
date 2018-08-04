@@ -8,22 +8,21 @@ const lightYellow = [255, 255, 0xb3];
 
 const pixelArray = [lightYellow, black];
 
+var myFrame;
 var frameWidth;
 
 var myCanvas;
 var canvasWidth;
 var canvasMidPoint;
 var canvasHeight;
-var canvasContext;
-var canvasImage;
 var cellIndexStart;
 var cellIndexEnd;
 
-const putPixelLine = (pixelIndex, pixel) => {
-	canvasImage.data[pixelIndex++] = pixel[0]; // red
-	canvasImage.data[pixelIndex++] = pixel[1]; // green
-	canvasImage.data[pixelIndex++] = pixel[2]; // blue
-	canvasImage.data[pixelIndex] = 255; // opacity
+const putPixel = (imageParts, imageIndex, pixelParts) => {
+	imageParts[imageIndex++] = pixelParts[0]; // red
+	imageParts[imageIndex++] = pixelParts[1]; // green
+	imageParts[imageIndex++] = pixelParts[2]; // blue
+	imageParts[imageIndex] = 255; // opacity
 }
 
 const val2Array = value => {
@@ -36,8 +35,18 @@ const val2Array = value => {
 }
 
 const draw = ruleVal => {
+	myCanvas.width = canvasWidth;
+	myCanvas.height = canvasHeight;
+
+	const canvasContext = myCanvas.getContext('2d');
+	canvasContext.fillStyle = "white";
+	canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
+	const canvasImage = canvasContext.createImageData(canvasWidth, canvasHeight);
+
 	const ruleArry = val2Array(ruleVal);
-	let leftCell, midCell, rightCell;
+	let leftCell,
+		midCell,
+		rightCell;
 	let rowIndex;
 
 	currCells = new Array(canvasWidth).fill(0);
@@ -59,15 +68,12 @@ const draw = ruleVal => {
 				rightCell = currCells[cellIndex + 1];
 
 				nextCells[cellIndex] = ruleArry[(((leftCell << 1) + midCell) << 1) + rightCell];
-			}
-
-			[currCells, nextCells] = [nextCells, currCells];
+			} [currCells, nextCells] = [nextCells, currCells];
 		}
 
 		for (let i = cellIndexStart; i <= cellIndexEnd; i++) {
-			putPixelLine((rowIndex + i) * 4, pixelArray[currCells[i]]);
+			putPixel(canvasImage.data, (rowIndex + i) * 4, pixelArray[currCells[i]]);
 		}
-
 
 		rowIndex += canvasWidth;
 		cellIndexStart--;
@@ -77,8 +83,10 @@ const draw = ruleVal => {
 };
 
 $(() => {
-	frameWidth = $("#myFrame").width();
+	myFrame = $("#myFrame");
 	myCanvas = $("#myCanvas")[0];
+
+	frameWidth = $("#myFrame").width();
 
 	canvasMidPoint = frameWidth >> 1;
 	if ((frameWidth & 1) == 0) { // frameWidth is even
@@ -88,13 +96,6 @@ $(() => {
 
 	canvasWidth = frameWidth;
 	canvasHeight = canvasMidPoint;
-
-	myCanvas.width = canvasWidth;
-	myCanvas.height = canvasHeight;
-	canvasContext = myCanvas.getContext('2d');
-	canvasContext.fillStyle = "white";
-	canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
-	canvasImage = canvasContext.createImageData(canvasWidth, canvasHeight);
 
 	draw(30);
 });
