@@ -1,18 +1,4 @@
 "use strict";
-const rule28 =  [0,0,1,1,1,0,0,0];	// x1C
-const rule30 =  [0,1,1,1,1,0,0,0];	// x1E
-const rule50 =  [0,1,0,0,1,1,0,0];	// x32
-const rule54 =  [0,1,1,0,1,1,0,0];	// x36
-const rule58 =  [0,1,0,1,1,1,0,0];	// x3A
-const rule90 =  [0,1,0,1,1,0,1,0];	// x5A
-const rule110 = [0,1,1,1,0,1,1,0];	// x6E
-const rule114 = [0,1,0,0,1,1,1,0];	// x72
-const rule122 = [0,1,0,1,1,1,1,0];	// x7A
-const rule178 = [0,1,0,0,1,1,0,1];	// xB2
-const rule184 = [0,0,0,1,1,1.0,1];	// xB8
-const rule186 = [0,1,0,1,1,1,0,1];	// xBA
-const rule242 = [0,1,0,0,1,1,1,1];	// xF2
-const rule250 = [0,1,0,1,1,1,1,1];	// xFA
 
 var currCells;
 var nextCells;
@@ -40,7 +26,16 @@ const putPixelLine = (pixelIndex, pixel) => {
 	canvasImage.data[pixelIndex] = 255; // opacity
 }
 
-const generateCells = rule => {
+const val2Array = value => {
+	let arry = [];
+	for (let i = 0; i < 8; i++) {
+		arry.push(value & 1);
+		value >>= 1;
+	}
+	return arry;
+}
+
+const generateCells = ruleArry => {
 
 	let leftCell;
 	let midCell = 0;
@@ -50,13 +45,14 @@ const generateCells = rule => {
 		midCell = rightCell;
 		rightCell = currCells[cellIndex + 1];
 
-		nextCells[cellIndex] = rule[(((leftCell << 1) + midCell) << 1) + rightCell];
+		nextCells[cellIndex] = ruleArry[(((leftCell << 1) + midCell) << 1) + rightCell];
 	}
 
 	[currCells, nextCells] = [nextCells, currCells];
 };
 
-const draw = () => {
+const draw = ruleVal => {
+	const ruleArry = val2Array(ruleVal);
 	let rowIndex;
 
 	currCells = new Array(canvasWidth).fill(0);
@@ -70,7 +66,7 @@ const draw = () => {
 		if (lineNr == 0)
 			currCells[canvasMidPoint] = 1;
 		else
-			generateCells(rule30);
+			generateCells(ruleArry);
 
 		for (let i = cellIndexStart; i <= cellIndexEnd; i++) {
 			putPixelLine((rowIndex + i) * 4, pixelArray[currCells[i]]);
@@ -86,6 +82,8 @@ const draw = () => {
 
 $(() => {
 	frameWidth = $("#myFrame").width();
+	myCanvas = $("#myCanvas")[0];
+
 	canvasMidPoint = frameWidth >> 1;
 	if ((frameWidth & 1) == 0) { // frameWidth is even
 		canvasMidPoint--;
@@ -95,7 +93,6 @@ $(() => {
 	canvasWidth = frameWidth;
 	canvasHeight = canvasMidPoint;
 
-	myCanvas = $("#myCanvas")[0];
 	myCanvas.width = canvasWidth;
 	myCanvas.height = canvasHeight;
 	canvasContext = myCanvas.getContext('2d');
@@ -103,5 +100,5 @@ $(() => {
 	canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
 	canvasImage = canvasContext.createImageData(canvasWidth, canvasHeight);
 
-	draw();
+	draw(30);
 });
