@@ -26,8 +26,7 @@ const putPixel = (imageParts, imageIndex, pixelParts) => {
 }
 
 // adapted from:
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/put
-// I mageData
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putImageData
 function putImageData(ctx, imageData) {
 	const data = imageData.data;
 	const height = imageData.height;
