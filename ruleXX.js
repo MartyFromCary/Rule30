@@ -19,8 +19,9 @@ const val2Array = value => {
 	return arry;
 }
 
-const draw = ruleVal => {
-	const ruleArry = val2Array(ruleVal);
+const draw = () => {
+	alert(ruleNr);
+	const ruleArry = val2Array(ruleNr);
 
 	// myFrame was set to width:100%;height:100%
 	let frameWidth = $("#myFrame").width();
@@ -97,5 +98,16 @@ $(() => {
 	myFrame = $("#myFrame");
 	myCanvas = $("#myCanvas")[0];
 
-	myRun.click(() => { draw(ruleNr) });
+	myRule.change(e => {
+		if (e.keyCode == 13) {
+			e.preventDefault(); //return false;
+		}
+		let rule = parseInt(myRule.val());
+		if (rule > 0 && rule < 255) {
+			myRule.text(rule);
+			myRun.text(`Run Rule ${rule}`);
+			ruleNr = rule;
+		}
+	});
+	myRun.click(draw);
 });
