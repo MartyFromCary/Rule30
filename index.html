@@ -2,47 +2,29 @@
 
 <head>
   <title>Rule 30 Cellular Automaton</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <style>
-    body {
-      background-color: rgb(231, 119, 67);
-    }
-  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="ruleXX.js"></script>
 </head>
 
-<body>
+<body style="background-color: rgb(231, 119, 67)">
 
-  <div class="container fillX">
-
-    <div class="row">
-      <div class="col-2">
-        <form>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Select Rule Number</label>
-            <input class="form-control" id="myRule" type="number" value="30" min=1 max=254>
-          </div>
-        </form>
-
-        <button type="button" id="myRun" class="btn btn-warning">Run</button>
-
-      </div>
-    </div>
-
-    <div id="myFrame" style="width:100%;height:100%">
-      <canvas id="myCanvas"></canvas>
-    </div>
-
-    <footer>
-      <h2 class="text-center">
-        <a href="https://en.wikipedia.org/wiki/Rule_30" target="_blank">What is Rule 30?</a>
-      </h2>
-    </footer>
-
+  <div style="padding: 15px; font-size: 100%">
+    <form>
+      <label for="myRule">Select Rule Number</label>
+      <input id="myRule" type="number" value="30" min=1 max=254>
+      <button type="button" id="myRun" class="btn btn-warning">Run</button>
+    </form>
   </div>
+
+  <div id="myFrame" style="width:100%;height:100%">
+    <canvas id="myCanvas"></canvas>
+  </div>
+
+  <footer>
+    <h2 style="text-align:center">
+      <a href="https://en.wikipedia.org/wiki/Rule_30" target="_blank">What is Rule 30?</a>
+    </h2>
+  </footer>
 
 </body>
 
