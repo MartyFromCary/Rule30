@@ -1,7 +1,8 @@
 "use strict";
 
-const cellWhite = "#E9EDD6"; //"#FFFFB3";
-const cellBlack = "#933D19"; //"black";
+// Colors taken from: https://en.wikipedia.org/wiki/Rule_30#/media/File:Textile_cone.JPG
+const cellWhite = "#E9EDD6"; // light spot from Conus textile
+const cellBlack = "#933D19"; // dark spot from Conus textile
 
 var myRule;
 var myRun;
@@ -72,26 +73,25 @@ const draw = () => {
 	let cellIndexEnd = canvasMidPoint + 1;
 	for (let yCoord = 1; yCoord < canvasHeight; yCoord++) {
 
-		let scope = [0, 0, 0];	// left cell, mid cell, right cell;
+		let leftCell = 0, midCell = 0, rightCell = 0;
 		for (let xCoord = cellIndexStart; xCoord <= cellIndexEnd; xCoord++) {
 
-			[scope[0], scope[1], scope[2]] = [scope[1], scope[2], currCells[xCoord + 1]];
+			[leftCell, midCell, rightCell] = [midCell, rightCell, currCells[xCoord + 1]];
 			// Shift the scope of cells i.e.
 			// no need to calculate values for:
 			// leftCell, midCell
 			// since they are the same values of the previous iteration values:
 			// midCell, rightCell
 
-			let ruleArryIndex = scope[0];
-			ruleArryIndex <<= 1;
-			ruleArryIndex += scope[1];
-			ruleArryIndex <<= 1;
-			ruleArryIndex += scope[2];
-			let cellValue = ruleArry[ruleArryIndex];
+			let cellValue = ruleArry[(leftCell * 2 + midCell) * 2 + rightCell];
+			// Set for next iteration
+			nextCells[xCoord] = cellValue;
+
 			if (cellValue == 1) {
+				// Set pixel to cellBlack
 				canvasContext.fillRect(xCoord, yCoord, 1, 1);
 			}
-			nextCells[xCoord] = cellValue;
+
 		} // End xCoord
 
 		// Switch pointers for the next iteration.
